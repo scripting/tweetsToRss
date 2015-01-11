@@ -1,0 +1,16 @@
+{
+	"name": "tweetsToRss",
+	"description": "A node.js app that periodically reads a Twitter account and generates an RSS feed from it.",
+	"author": "Dave Winer <dave@smallpicture.com>",
+	"version": "0.40.0",
+	"scripts": {
+		"start": "node tweetstorss.js"
+			},
+	"dependencies" : {
+		"node-twitter-api": "*"
+		}, 
+	"license": "MIT",
+	"engines": {
+		"node": "0.10.*"
+		}
+	}
