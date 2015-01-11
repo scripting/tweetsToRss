@@ -24,3 +24,7 @@ twitterScreenName -- the screen_name of the user whose timeline you want to conv
 
 pathRssFile -- this is the local filesystem path for the file we'll maintain. It's optional, if you don't specify it we write the file as rss.xml in the same folder as the app.
 
+#### Questions, comments?
+
+Please use the <a href="https://groups.google.com/forum/?fromgroups#!topic/server-snacks/KGAqhB3g3Ys">server-snacks</a> list for support.
+
