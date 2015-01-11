@@ -1,3 +1,11 @@
+#### What it is
+
+A node.js app that periodically reads a Twitter account and generates an RSS feed from it.
+
+#### Overview
+
+Once it's set up, every minute it gets the most recent tweets for one Twitter account, and writes an RSS file with the content of those tweets.
+
 #### Set up with Twitter
 
 You need to set four environment variables, to connect this app with Twitter. 
