@@ -6,6 +6,8 @@ A node.js app that periodically reads a Twitter account and generates an RSS fee
 
 Once it's set up, every minute it gets the most recent tweets for one Twitter account, and writes an RSS file with the content of those tweets.
 
+I've included an <a href="https://github.com/scripting/tweetsToRss/blob/master/exampleFeed.xml">example feed</a> in the repo to show you what one looks like.
+
 #### Set up with Twitter
 
 You need to set four environment variables, to connect this app with Twitter. 
