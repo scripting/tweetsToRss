@@ -16,7 +16,7 @@ You need to set four environment variables, to connect this app with Twitter.
 
 <i>twitterConsumerKey</i> and <i>twitterConsumerSecret</i> -- get these by registering an app at <a href="https://apps.twitter.com/">apps.twitter.com</a>. 
 
-<i>twitterAccessToken</i> and <i>twitterAccessTokenSecret</i> -- these are the two keys that a user gets when they do the OAuth dance with your app and Twitter. I get these values by logging in with my app, say <a href="http://happyfriends.camp/">Happy Friends</a> or <a href="http://radio3.io/">Radio3</a>, and grabbing copies of the values from localStorage where they're kept. I don't know a better way to get these values. If you do, please create a page on the wiki here and I'll have a look.
+<i>twitterAccessToken</i> and <i>twitterAccessTokenSecret</i> -- these are the two keys that a user gets when they do the OAuth dance with your app and Twitter. I get these values by logging in with my app, say <a href="http://happyfriends.camp/">Happy Friends</a> or <a href="http://radio3.io/">Radio3</a>, and grabbing copies of the values from localStorage where they're kept. I don't know a better way to get these values. If you do, please create a page on the <a href="https://github.com/scripting/tweetsToRss/wiki">wiki</a> here and I'll have a look.
 
 #### Which Twitter account, where to save the feed
 
