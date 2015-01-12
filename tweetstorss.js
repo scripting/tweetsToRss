@@ -20,7 +20,7 @@
 	//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	//SOFTWARE.
 
-var myVersion = "0.42", myProductName = "tweetsToRss", myProductUrl = "https://github.com/scripting/tweetsToRss";
+var myVersion = "0.43", myProductName = "tweetsToRss", myProductUrl = "https://github.com/scripting/tweetsToRss";
 
 var fs = require ("fs");
 var twitterAPI = require ("node-twitter-api");
@@ -109,6 +109,30 @@ function beginsWith (s, possibleBeginning, flUnicase) {
 	else {
 		for (var i = 0; i < possibleBeginning.length; i++) {
 			if (s [i] != possibleBeginning [i]) {
+				return (false);
+				}
+			}
+		}
+	return (true);
+	}
+function endsWith (s, possibleEnding, flUnicase) {
+	if ((s === undefined) || (s.length == 0)) { 
+		return (false);
+		}
+	var ixstring = s.length - 1;
+	if (flUnicase === undefined) {
+		flUnicase = true;
+		}
+	if (flUnicase) {
+		for (var i = possibleEnding.length - 1; i >= 0; i--) {
+			if (stringLower (s [ixstring--]) != stringLower (possibleEnding [i])) {
+				return (false);
+				}
+			}
+		}
+	else {
+		for (var i = possibleEnding.length - 1; i >= 0; i--) {
+			if (s [ixstring--] != possibleEnding [i]) {
 				return (false);
 				}
 			}
@@ -366,9 +390,18 @@ function startup () {
 	console.log ();
 	console.log (myProductName + " v" + myVersion + ".");
 	console.log ();
-	if (pathRssFile == undefined) {
-		pathRssFile = defaultRssFilePath;
-		}
+	
+	//check pathRssFile -- 1/12/15 by DW
+		if (pathRssFile == undefined) {
+			pathRssFile = defaultRssFilePath;
+			}
+		else {
+			pathRssFile = trimWhitespace (pathRssFile);
+			if (endsWith (pathRssFile, "/")) {
+				pathRssFile += "rss.xml";
+				}
+			}
+	
 	everyMinute (); //call once at startup, then every minute
 	setInterval (everyMinute, 60000); 
 	}
