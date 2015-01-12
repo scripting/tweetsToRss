@@ -20,7 +20,7 @@
 	//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	//SOFTWARE.
 
-var myVersion = "0.41", myProductName = "tweetsToRss", myProductUrl = "https://github.com/scripting/tweetsToRss";
+var myVersion = "0.42", myProductName = "tweetsToRss", myProductUrl = "https://github.com/scripting/tweetsToRss";
 
 var fs = require ("fs");
 var twitterAPI = require ("node-twitter-api");
@@ -145,9 +145,10 @@ function newTwitter (myCallback) {
 function getTwitterTimeline (username, callback) {
 	var twitter = newTwitter ();
 	var params = {screen_name: username, trim_user: "false"};
-	twitter.getTimeline ("user", params, accessToken, accessTokenSecret, function (error, data, response) {
-		if (error) {
-			console.log ("getTwitterTimeline: error == " + error.message);
+	twitter.getTimeline ("user", params, accessToken, accessTokenSecret, function (err, data, response) {
+		if (err) {
+			var errinfo = JSON.parse (err.data);
+			console.log ("getTwitterTimeline: error == \"" + errinfo.errors [0].message + "\"");
 			}
 		else {
 			if (callback != undefined) {
