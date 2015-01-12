@@ -14,9 +14,19 @@ I've included an <a href="https://github.com/scripting/tweetsToRss/blob/master/e
 
 You need to set four environment variables, to connect this app with Twitter. 
 
-<i>twitterConsumerKey</i> and <i>twitterConsumerSecret</i> -- get these by registering an app at <a href="https://apps.twitter.com/">apps.twitter.com</a>. 
+To begin, create a new app at <a href="https://apps.twitter.com/">apps.twitter.com</a>. From there, you'll need to set environment variables with these four values.
 
-<i>twitterAccessToken</i> and <i>twitterAccessTokenSecret</i> -- these are the two keys that a user gets when they do the OAuth dance with your app and Twitter. You can get these values by clicking on the Test OAuth button in apps.twitter.com, as shown in this <a href="http://scripting.com/2015/01/12/getKeys.png">screen shot</a>. All four values are shown on that page. Perfect. ;-)
+1. <i>twitterConsumerKey</i>
+
+2. <i>twitterConsumerSecret</i>
+
+3. <i>twitterAccessToken</i>
+
+4. <i>twitterAccessTokenSecret</i>
+
+You can get these values by clicking on the <i>Test OAuth</i> button in apps.twitter.com, as shown in this <a href="http://scripting.com/2015/01/12/getKeys.png">screen shot</a>. 
+
+All four values are <a href="http://scripting.com/2015/01/12/fourvalues.png">shown</a> on that page. Perfect. ;-)
 
 #### Which Twitter account, where to save the feed
 
