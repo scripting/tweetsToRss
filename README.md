@@ -2,7 +2,7 @@
 
 A node.js app that periodically reads a Twitter account and generates an RSS feed from it.
 
-Written by <a href="http://scripting.com/">Dave Winer</a>. 
+Written by <a href="http://scripting.com/2015/01/12/goodRssFromTwitter.html">Dave Winer</a>. 
 
 #### Overview
 
