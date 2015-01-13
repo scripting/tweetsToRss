@@ -20,7 +20,7 @@
 	//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	//SOFTWARE.
 
-var myVersion = "0.43", myProductName = "tweetsToRss", myProductUrl = "https://github.com/scripting/tweetsToRss";
+var myVersion = "0.44", myProductName = "tweetsToRss", myProductUrl = "https://github.com/scripting/tweetsToRss";
 
 var fs = require ("fs");
 var twitterAPI = require ("node-twitter-api");
@@ -37,6 +37,9 @@ var flSkipReplies = true;
 
 function twTwitterDateToGMT (twitterDate) { //7/16/14 by DW
 	return (new Date (twitterDate).toGMTString ());
+	}
+function stringLower (s) { //1/13/15 by DW
+	return (s.toLowerCase ());
 	}
 function filledString (ch, ct) { //6/4/14 by DW
 	var s = "";
