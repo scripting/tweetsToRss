@@ -34,6 +34,18 @@ All four values are <a href="http://scripting.com/2015/01/12/fourvalues.png">sho
 
 <i>pathRssFile</i> -- this is the local filesystem path for the file we'll maintain. It's optional, if you don't specify it we write the file as rss.xml in the same folder as the app.
 
+#### Managing multiple feeds
+
+In version 0.45 I added a new feature that allows you to watch more than one Twitter account, produce an RSS feed for each.
+
+If there's a file called config.json in the same folder as tweetstorss.js, the app will read it every minute, and use the accounts listed in the file, instead of the twitterScreenName environment variable. 
+
+Here's an <a href="https://gist.github.com/scripting/2c0c9faacdef884817d7">example</a> of the config.json file that's running on my system. 
+
+1. The <i>folder</i> value says where to store the generated RSS feeds. It can be a relative path as shown in the example, or can be a path from the root of your filesystem. 
+
+2. The <i>items</i> array is a set of objects, each of which specifies a Twitter username and the name of the RSS file created from the account. 
+
 #### Questions, comments?
 
 Please use the <a href="https://groups.google.com/forum/?fromgroups#!topic/server-snacks/KGAqhB3g3Ys">server-snacks</a> list for support.
