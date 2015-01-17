@@ -20,7 +20,7 @@
 	//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	//SOFTWARE.
 
-var myVersion = "0.44", myProductName = "tweetsToRss", myProductUrl = "https://github.com/scripting/tweetsToRss";
+var myVersion = "0.45", myProductName = "tweetsToRss", myProductUrl = "https://github.com/scripting/tweetsToRss";
 
 var fs = require ("fs");
 var twitterAPI = require ("node-twitter-api");
@@ -34,6 +34,32 @@ var pathRssFile = process.env.pathRssFile;
 
 var defaultRssFilePath = "rss.xml";
 var flSkipReplies = true;
+
+var configStruct = undefined; //1/16/15 by DW
+var fnameConfig = "config.json";
+
+
+
+function loadConfigStruct (callback) { //1/16/15 by DW
+	fs.readFile (fnameConfig, "utf8", function (err, data) {
+		if (!err) {
+			try {
+				configStruct = JSON.parse (data);
+				if (configStruct.folder != undefined) {
+					if (!endsWith (configStruct.folder, "/")) {
+						configStruct.folder += "/";
+						}
+					}
+				}
+			catch (tryError) {
+				console.log ("loadConfigStruct: error == " + tryError.message);    
+				}
+			}
+		if (callback != undefined) {
+			callback ();
+			}
+		});
+	}
 
 function twTwitterDateToGMT (twitterDate) { //7/16/14 by DW
 	return (new Date (twitterDate).toGMTString ());
@@ -160,6 +186,44 @@ function getBoolean (val) {
 		}
 	return (false);
 	}
+function jsonStringify (jstruct) { 
+	return (JSON.stringify (jstruct, undefined, 4));
+	}
+function stringMid (s, ix, len) { 
+	return (s.substr (ix-1, len));
+	}
+function fsSureFilePath (path, callback) { 
+	var splits = path.split ("/");
+	path = ""; //1/8/15 by DW
+	if (splits.length > 0) {
+		function doLevel (levelnum) {
+			if (levelnum < (splits.length - 1)) {
+				path += splits [levelnum] + "/";
+				fs.exists (path, function (flExists) {
+					if (flExists) {
+						doLevel (levelnum + 1);
+						}
+					else {
+						fs.mkdir (path, undefined, function () {
+							doLevel (levelnum + 1);
+							});
+						}
+					});
+				}
+			else {
+				if (callback != undefined) {
+					callback ();
+					}
+				}
+			}
+		doLevel (0);
+		}
+	else {
+		if (callback != undefined) {
+			callback ();
+			}
+		}
+	}
 
 function newTwitter (myCallback) {
 	var twitter = new twitterAPI ({
@@ -184,8 +248,7 @@ function getTwitterTimeline (username, callback) {
 			}
 		});
 	}
-
-function getFeed (username) {
+function getFeed (username, fname, callback) {
 	if (username != undefined) {
 		var rssHeadElements, rssHistory = new Array ();
 		function buildRssFeed (headElements, historyArray) {
@@ -343,28 +406,30 @@ function getFeed (username) {
 				twitterScreenName: username,
 				maxFeedItems: 25
 				};
-			//try to split the tweet text into text and a link
-				var s = t.text, link = undefined;
-				for (var i = s.length - 1; i >= 0; i--) {
-					if (s [i] == " ") {
-						var x = s.substr (i + 1);
-						if (beginsWith (x, "http://")) {
-							s = s.substr (0, i);
-							link = x;
-							}
-						break;
-						}
-					}
-			rssHistory [rssHistory.length] = {
+			var historyItem = {
 				when: new Date (t.created_at),
-				text: s,
 				idTweet: t.id_str,
-				link: link,
 				guid: {
 					flPermalink: true,
 					value: userbaseurl + "status/" + t.id_str
 					}
 				};
+			//try to split the tweet text into text and a link
+				var thetext = t.text, thelink = undefined;
+				for (var i = thetext.length - 1; i >= 0; i--) {
+					if (thetext [i] == " ") {
+						thelink = thetext.substr (i + 1);
+						if (beginsWith (thelink.toLowerCase (), "http://")) {
+							historyItem.text = stringMid (thetext, 1, i);
+							historyItem.link = thelink;
+							}
+						else {
+							historyItem.text = thetext;
+							}
+						break;
+						}
+					}
+			rssHistory [rssHistory.length] = historyItem;
 			}
 		getTwitterTimeline (username, function (theTweets) { 
 			for (var i = 0; i < theTweets.length; i++) {
@@ -379,15 +444,45 @@ function getFeed (username) {
 					}
 				}
 			var xmltext = buildRssFeed (rssHeadElements, rssHistory);
-			fs.writeFile (pathRssFile, xmltext, function (err) {
-				console.log ("getFeed: " + xmltext.length + " chars in " + pathRssFile);
+			fsSureFilePath (fname, function () {
+				fs.writeFile (fname, xmltext, function (err) {
+					console.log ("getFeed: " + xmltext.length + " chars in " + fname);
+					if (callback != undefined) {
+						callback ();
+						}
+					});
 				});
 			});
+		}
+	else {
+		if (callback != undefined) {
+			callback ();
+			}
 		}
 	}
 
 function everyMinute () {
-	getFeed (twitterScreenName)
+	console.log ("");
+	console.log ("everyMinute: " + new Date ().toLocaleTimeString ());
+	loadConfigStruct (function () {
+		if (configStruct != undefined) {
+			function readOne (ix) {
+				if (ix < configStruct.items.length) {
+					var item = configStruct.items [ix], fname = item.feedname;
+					if (configStruct.folder != undefined) {
+						fname = configStruct.folder + fname;
+						}
+					getFeed (item.username, fname, function () {
+						readOne (ix + 1);
+						});
+					}
+				}
+			readOne (0);
+			}
+		else {
+			getFeed (twitterScreenName, pathRssFile)
+			}
+		});
 	}
 function startup () {
 	console.log ();
