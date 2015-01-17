@@ -46,7 +46,7 @@ Here's an <a href="https://gist.github.com/scripting/2c0c9faacdef884817d7">examp
 
 2. The <i>items</i> array is a set of objects, each of which specifies a Twitter username and the name of the RSS file created from the account. 
 
-Because we read the file every time we do a scan, you can change the config.json without having to relaunch tweetstorss.js.
+Because we read config.json every time we do a scan, you can change the file without having to relaunch tweetstorss.js. 
 
 #### Questions, comments?
 
