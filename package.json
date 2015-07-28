@@ -7,7 +7,8 @@
 		"start": "node tweetstorss.js"
 			},
 	"dependencies" : {
-		"node-twitter-api": "*"
+		"node-twitter-api": "*",
+		"nconf": "*"
 		}, 
 	"license": "MIT",
 	"engines": {
