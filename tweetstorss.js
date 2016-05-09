@@ -25,12 +25,20 @@ var myVersion = "0.45", myProductName = "tweetsToRss", myProductUrl = "https://g
 var fs = require ("fs");
 var twitterAPI = require ("node-twitter-api");
 
-var twitterConsumerKey = process.env.twitterConsumerKey;
-var twitterConsumerSecret = process.env.twitterConsumerSecret;
-var accessToken = process.env.twitterAccessToken;
-var accessTokenSecret = process.env.twitterAccessTokenSecret;
-var twitterScreenName = process.env.twitterScreenName;
-var pathRssFile = process.env.pathRssFile;
+// Use nconf to be able to read settings command-line if required
+var nconf = require('nconf');
+nconf.argv().env();
+
+// Fetch data every minute by default, but you can turn this off and fetch the data just once (e.g. via a cron script) by setting --runEveryMinute false on the command line
+nconf.defaults({'runEveryMinute': true});
+
+var twitterConsumerKey = nconf.get('twitterConsumerKey');
+var twitterConsumerSecret = nconf.get('twitterConsumerSecret');
+var accessToken = nconf.get('accessToken');
+var accessTokenSecret = nconf.get('accessTokenSecret');
+var twitterScreenName = nconf.get('twitterScreenName');
+var pathRssFile = nconf.get('pathRssFile');
+var runEveryMinute = nconf.get('runEveryMinute');
 
 var defaultRssFilePath = "rss.xml";
 var flSkipReplies = true;
@@ -501,7 +509,10 @@ function startup () {
 			}
 	
 	everyMinute (); //call once at startup, then every minute
-	setInterval (everyMinute, 60000); 
+	
+	if (runEveryMinute === true) {
+		setInterval (everyMinute, 60000); 
 	}
+}
 startup ();
 
